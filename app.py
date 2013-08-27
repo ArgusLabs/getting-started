@@ -5,7 +5,11 @@ import json
 ACCESS_TOKEN = 'IDVisbLVpMEWNbX8Jap5iYF5mcAGf1Qd8M06ocin2xjCdaBYZn0ZTav8mk7LhstuSxiWo7XhQcZ2V5aCZHTu3Xi7dXQAPJloYd4zglXN3P5nnlIa9Mpb4cCi5PRwgpzO'
 USER_ID = '51b81ea24d8fc6866c000005'
 
+# Staging URL
 url = 'http://argusdev3.arguslabs.be:3666/users/' + USER_ID + '/timeline?end=1376604000&limit=400&start=1376517600'
+# TODO update to production URL
+#url = 'http://api.summerofcontext.com:80/users/' + USER_ID + '/timeline?end=1376604000&limit=400&start=1376517600'
+
 headers = {'authorization': 'Bearer ' + ACCESS_TOKEN, 'content-type': 'application/json'}
 
 r = requests.get(url, headers=headers)
@@ -22,7 +26,7 @@ musicItemCount = 0
 musicHash = dict([(x['@id'],x) for x in js['environment']])
 
 musicItems = filter(lambda item: item['@type'] == 'ctx:MusicTrackItem', js['environment'])
-artists = map(lambda item: item['artist'].get('name', None), musicItems)
+artists = map(lambda item: item['artist'].get('name', item['artist']['@id']), musicItems)
 artists = list(set(artists))
 
 musicSessions = filter(lambda item: item['@type'] == 'ctx:MusicSessionItem', js['environment'])
