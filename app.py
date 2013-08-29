@@ -6,9 +6,8 @@ ACCESS_TOKEN = 'IDVisbLVpMEWNbX8Jap5iYF5mcAGf1Qd8M06ocin2xjCdaBYZn0ZTav8mk7Lhstu
 USER_ID = '51b81ea24d8fc6866c000005'
 
 # Staging URL
-url = 'http://argusdev3.arguslabs.be:3666/users/' + USER_ID + '/timeline?end=1376604000&limit=400&start=1376517600'
+url = 'http://192.168.69.3:3666/users/' + USER_ID + '/timeline?end=1376604000&limit=400&start=1376517600'
 # TODO update to production URL
-#url = 'http://api.summerofcontext.com:80/users/' + USER_ID + '/timeline?end=1376604000&limit=400&start=1376517600'
 
 headers = {'authorization': 'Bearer ' + ACCESS_TOKEN, 'content-type': 'application/json'}
 
@@ -42,6 +41,7 @@ print 'found %d locations' % len(locations)
 
 
 sorted_locations = sorted(locations, key=lambda loc:loc['time']['timestamp'])
+musicTracksWithoutLocation = musicItems
 
 for i, location in enumerate(sorted_locations):
     start_time = location['time']['timestamp']
@@ -49,10 +49,13 @@ for i, location in enumerate(sorted_locations):
         end_time = sorted_locations[i+1]['time']['timestamp']
         print 'at location x from %s to %s' % (start_time, end_time)
     
-        musicTracksAtLocation = filter(lambda item: (item['time']['from']['timestamp'] > start_time and item['time']['from']['timestamp'] < end_time), musicItems)
+        musicTracksAtLocation = filter(lambda item: (item['time']['from']['timestamp'] > start_time and item['time']['from']['timestamp'] < end_time), musicTracksWithoutLocation)
+        musicTracksWithoutLocation = filter(lambda item: (item not in musicTracksAtLocation), musicTracksWithoutLocation)
         for musictrack in musicTracksAtLocation:
             print '\tlistened to %s' % musictrack['artist'].get('name',musictrack['artist']['@id'])
-
+print 'Tracks without location info:'
+for musictrack in musicTracksWithoutLocation:
+	print '\tlistened to %s at %s' % (musictrack['artist'].get('name',musictrack['artist']['@id']), musictrack['time']['from']['timestamp'])
 
 
 
