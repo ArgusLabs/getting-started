@@ -1,5 +1,3 @@
----
----
 
 # Getting Started
 
@@ -85,7 +83,7 @@ for i, location in enumerate(sorted_locations):
             print '\tlistened to %s - %s' % (artist, track)
 ```
 
-A detailed description of all possible context items and their fields can be found in the [Data Model Reference](https://developer.summerofcontext.com/#/reference#data_model_reference){:target="_blank"}
+A detailed description of all possible context items and their fields can be found in the [Data Model Reference](https://developer.summerofcontext.com/#/reference#data_model_reference)
 
 ### The results
 
